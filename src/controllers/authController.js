@@ -13,7 +13,7 @@ export async function signUp(req, res) {
     return res.sendStatus(401);
   }
 
-  const hashPassword = bcrypt.hashSync(user.password, 10);
+  const hashPassword = bcrypt.hashSync(user.senha, 10);
   try {
     await connection.query(
       "INSERT INTO usuarios (nome, email, senha) VALUES ($1, $2, $3)",
@@ -26,7 +26,7 @@ export async function signUp(req, res) {
 }
 
 export async function signIn(req, res) {
-  const { email, password } = req.body;
+  const { email, senha } = req.body;
 
   try {
     const user = await connection.query(
@@ -37,7 +37,7 @@ export async function signIn(req, res) {
       return res.sendStatus(404);
     }
     const name = user.rows[0].nome;
-    if (bcrypt.compareSync(password, user.password)) {
+    if (bcrypt.compareSync(senha, user.senha)) {
       const token = uuid();
       await connection.query(
         'INSERT INTO sessoes ("idUsuario", token) VALUES ($1, $2)',
