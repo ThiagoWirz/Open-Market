@@ -36,7 +36,7 @@ export async function signIn(req, res) {
     if (user.rowCount === 0) {
       return res.sendStatus(404);
     }
-    const name = user.rows[0].name;
+    const name = user.rows[0].nome;
     if (bcrypt.compareSync(password, user.password)) {
       const token = uuid();
       await connection.query(
